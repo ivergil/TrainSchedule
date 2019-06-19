@@ -1,0 +1,14 @@
+.card-header{
+    background-color: dodgerblue;
+    color: white;
+    font-size: 22px;
+}
+.jumbotron{
+    background-color: #46b4a9;
+    margin-top: 30px;
+    height: 150px;
+}
+
+.btn{
+    background: dodgerblue;
+}
