@@ -11,9 +11,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-    <!-- Firebase References -->
-    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+
     <link rel="stylesheet" href="assets/css/style.css">
 
 </head>
@@ -22,7 +20,7 @@
 
     <div class="container">
 
-        <!-- Jumbotron -->
+
         <div class="jumbotron">
             <h1 class="text-center " style="color:white">Any Time is Train Time!</h1>
             <h5 class="text-center " style="color:white">Choo Choo. Chee Chee.</h5>
@@ -34,7 +32,21 @@
                     <div class="card-header">
                         Current Trains Schedule
                     </div>
-                    <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Train Name</th>
+                                <th>Destination</th>
+                                <th>Frequency (min)</th>
+                                <th>Next Arrival</th>
+                                <th>Minutes Away</th>
+                            </tr>
+                        </thead>
+                        <tbody id="train-table">
+                        </tbody>
+                    </table>
+
+                    <!-- <div class="card-body">
                         <div id="train-list">
                             <div class="row">
                                 <div class="col-3 text-center">
@@ -56,7 +68,7 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="card mt-4">
@@ -66,7 +78,6 @@
 
                     <div class="card-body">
 
-                        <!-- Sign-up Form (note the various input "types")-->
                         <form role="form">
                             <div class="form-group row">
                                 <label for="name-input">Train Name:</label>
@@ -77,32 +88,34 @@
                                 <input class="form-control" id="destination-input" type="text">
                             </div>
                             <div class="form-group row">
-                                <label for="train-input">First Train Time (HH:mm - Military Time)</label>
-                                <input class="form-control" id="train-input" type="number">
+                                <label for="time-input">First Train Time (HH:mm - Military Time)</label>
+                                <input class="form-control" id="time-input" type="text">
                             </div>
                             <div class="form-group row">
                                 <label for="frequency-input">Frequency (min)</label>
                                 <input class="form-control" id="frequency-input" type="number">
                             </div>
-                            <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+                            <button class="btn btn-default" id="add-train" type="submit">Submit</button>
                         </form>
 
                     </div>
                 </div>
             </div>
 
-
-
-            <!-- Wells for displaying all users -->
-
         </div>
 
     </div>
 
-    <!-- jQuery -->
 
+
+
+    <!-- Firebase Core JavaScript Link -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+    <!-- Specific Firebase products we want (Database) -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
     <!-- Script -->
     <script src="assets/javascript/train.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 </body>
 
 </html>
