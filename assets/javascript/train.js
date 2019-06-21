@@ -19,16 +19,17 @@ var destination = "";
 var firstTime = "";
 var trainFrequency = 0;
 
-dataRef.ref().orderByChild('name').on("child_added", function(data) {
-    // Use ` not ""
-      $("#train-table").append(`<tr>
-      <td scope="row">${data.val().trainName}</td>
-      <td>${data.val().destination}</td>
-      <td>${data.val().firstTime}</td>
-      <td>${data.val().trainFrequency}</td>
+dataRef.ref().orderByChild('name').on("child_added", function (data) {
+    clearInput();
+    $("#train-table").append(`<tr>
+      <td scope="row" class="text-center">${data.val().trainName}</td>
+      <td class="text-center">${data.val().destination}</td>
+      <td class="text-center">${data.val().firstTime}</td>
+      <td class="text-center">${data.val().trainFrequency}</td>
+      <td class="text-center">${data.val().dateAdded}</td>
     </tr>`)
-    });
-    
+});
+
 // Capture Button Click
 $("#add-train").on("click", function (event) {
     event.preventDefault();
@@ -44,12 +45,17 @@ $("#add-train").on("click", function (event) {
         destination: destination,
         firstTime: firstTime,
         trainFrequency: trainFrequency,
-        dateAdded:  moment().format('MMMM Do YYYY, HH:mm')
+        dateAdded: moment().format('MMMM Do YYYY, HH:mm')
 
         // dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
 });
-
+function clearInput() {
+    $("#name-input").val("");
+    $("#destination-input").val("");
+    $("#time-input").val("");
+    $("#frequency-input").val("");
+}
 // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
 // dataRef.ref().on("child_added", function (childSnapshot) {
 
