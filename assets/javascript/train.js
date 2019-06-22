@@ -18,6 +18,7 @@ var trainName = "";
 var destination = "";
 var firstTime = "";
 var trainFrequency = 0;
+var nextTrain = 0;
 
 dataRef.ref().orderByChild('name').on("child_added", function (data) {
     clearInput();
@@ -38,6 +39,8 @@ $("#add-train").on("click", function (event) {
     destination = $("#destination-input").val().trim();
     firstTime = $("#time-input").val().trim();
     trainFrequency = $("#frequency-input").val().trim();
+    // timeRemain();
+
 
     // Code for the push
     dataRef.ref().push({
@@ -50,11 +53,21 @@ $("#add-train").on("click", function (event) {
         // dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
 });
+
 function clearInput() {
     $("#name-input").val("");
     $("#destination-input").val("");
     $("#time-input").val("");
     $("#frequency-input").val("");
+}
+
+function timeRemain() {
+    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    var currentTime = moment();
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    var tRemainder = diffTime % trainFrequency;
+    var tMinutesTillTrain = trainFrequency - tRemainder;
+    nextTrain = moment().add(tMinutesTillTrain, "minutes");
 }
 // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
 // dataRef.ref().on("child_added", function (childSnapshot) {
