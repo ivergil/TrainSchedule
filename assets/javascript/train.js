@@ -18,10 +18,12 @@ var trainName = "";
 var destination = "";
 var firstTime = "";
 var trainFrequency = 0;
-var nextTrain = 0;
+var nextTrain = "";
+var tMinutesTillTrain = "";
 
 dataRef.ref().orderByChild('name').on("child_added", function (data) {
     clearInput();
+    timeRemain();
     $("#train-table").append(`<tr>
       <td scope="row" class="text-center">${data.val().trainName}</td>
       <td class="text-center">${data.val().destination}</td>
@@ -29,6 +31,8 @@ dataRef.ref().orderByChild('name').on("child_added", function (data) {
       <td class="text-center">${data.val().trainFrequency}</td>
       <td class="text-center">${data.val().dateAdded}</td>
     </tr>`)
+    
+    
 });
 
 // Capture Button Click
@@ -39,8 +43,10 @@ $("#add-train").on("click", function (event) {
     destination = $("#destination-input").val().trim();
     firstTime = $("#time-input").val().trim();
     trainFrequency = $("#frequency-input").val().trim();
-    // timeRemain();
 
+    timeRemain();
+    console.log(nextTrain);
+    
 
     // Code for the push
     dataRef.ref().push({
@@ -48,7 +54,8 @@ $("#add-train").on("click", function (event) {
         destination: destination,
         firstTime: firstTime,
         trainFrequency: trainFrequency,
-        dateAdded: moment().format('MMMM Do YYYY, HH:mm')
+        dateAdded: tMinutesTillTrain
+        // dateAdded: moment().format('MMMM Do YYYY, HH:mm')
 
         // dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
@@ -62,12 +69,15 @@ function clearInput() {
 }
 
 function timeRemain() {
+
     var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
     var currentTime = moment();
     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
     var tRemainder = diffTime % trainFrequency;
-    var tMinutesTillTrain = trainFrequency - tRemainder;
+    tMinutesTillTrain = trainFrequency - tRemainder;
     nextTrain = moment().add(tMinutesTillTrain, "minutes");
+
+    nextArrival = moment(nextTrain).format("hh:mm");
 }
 // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
 // dataRef.ref().on("child_added", function (childSnapshot) {
