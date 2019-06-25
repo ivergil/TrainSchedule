@@ -21,15 +21,22 @@ var trainFrequency = 0;
 var nextTrain = "";
 var tMinutesTillTrain = "";
 
-dataRef.ref().orderByChild('name').on("child_added", function (data) {
+dataRef.ref().on("child_added", function(data) {
     clearInput();
-    timeRemain();
+    var firstTimeConverted = moment(data.val().firstTime, "HH:mm").subtract(1, "years");
+    var currentTime = moment();
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    var tRemainder = diffTime % data.val().trainFrequency;
+    tMinutesTillTrain = data.val().trainFrequency - tRemainder;
+    nextTrain = moment().add(tMinutesTillTrain, "minutes");
+
+    nextArrival = moment(nextTrain).format("hh:mm");
     $("#train-table").append(`<tr>
       <td scope="row" class="text-center">${data.val().trainName}</td>
       <td class="text-center">${data.val().destination}</td>
       <td class="text-center">${data.val().firstTime}</td>
       <td class="text-center">${data.val().trainFrequency}</td>
-      <td class="text-center">${data.val().dateAdded}</td>
+      <td class="text-center">${tMinutesTillTrain}</td>
     </tr>`)
     
     
@@ -44,8 +51,8 @@ $("#add-train").on("click", function (event) {
     firstTime = $("#time-input").val().trim();
     trainFrequency = $("#frequency-input").val().trim();
 
-    timeRemain();
-    console.log(nextTrain);
+    // timeRemain();
+    // console.log(nextTrain);
     
 
     // Code for the push
@@ -69,12 +76,13 @@ function clearInput() {
 }
 
 function timeRemain() {
+   
 
-    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    var firstTimeConverted = moment(childSnapshot.val().firstTime, "HH:mm").subtract(1, "years");
     var currentTime = moment();
     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-    var tRemainder = diffTime % trainFrequency;
-    tMinutesTillTrain = trainFrequency - tRemainder;
+    var tRemainder = diffTime % childSnapshot.val().trainFrequency;
+    tMinutesTillTrain = childSnapshot.val().trainFrequency - tRemainder;
     nextTrain = moment().add(tMinutesTillTrain, "minutes");
 
     nextArrival = moment(nextTrain).format("hh:mm");
